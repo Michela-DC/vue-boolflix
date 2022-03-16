@@ -1,6 +1,6 @@
 <template>
     <div class="searchbar-wrapper" >
-        <input type="text" placeholder="Cerca un film o una serie TV" v-model="searchInput">
+        <input type="text" placeholder="Cerca un film o una serie TV" v-model="searchInput" v-on:keyup.enter="getMovies">
         <!-- al click sul mouse faccio partire la funzione che se vede che c'è sritto qualcosa nell'input fa la chiamata al server -->
         <button class="btn-search" @click="getMovies">Search</button>
     </div>
@@ -23,7 +23,7 @@ export default {
         getMovies: function () {
             // la funzione che fa la chiamata la faccio partire solo se è stato digitato qualcosa nell'input
             if(this.searchInput !== '') {
-                // chiamata per i film ------------------------
+                // chiamata per i FILM ---------------------------------
                 axios.get(`${this.baseURL}/search/movie`, {
                     params: {
                         api_key: 'b4627578657d378551ee9e5a127d725a',
@@ -36,9 +36,7 @@ export default {
                     state.movies = res.data.results;
     
                     console.log('dentro state.movies =', state.movies);
-    
                 })
-    
                 //recupero errori o risposte negative del server
                 .catch( err => {
                     console.warn(err.response);
@@ -46,7 +44,7 @@ export default {
                     state.movies = [];
                 })
 
-                // chiamata per le serie TV -----------------
+                // chiamata per le SERIE TV ----------------------------
                 axios.get(`${this.baseURL}/search/tv`, {
                     params: {
                         api_key: 'b4627578657d378551ee9e5a127d725a',
@@ -59,9 +57,7 @@ export default {
                     state.tvSeries = res.data.results;
     
                     console.log('dentro state.movies =', state.tvSeries);
-    
                 })
-    
                 //recupero errori o risposte negative del server
                 .catch( err => {
                     console.warn(err.response);

@@ -1,6 +1,13 @@
 <template>
     <div class="cards-container">
         <div class="card" v-for="item in mergedFilters" :key="item.id">
+            <figure v-if="item.poster_path == null">
+                image not available
+            </figure>
+            <figure v-else class="poster-wrapper">
+                <img :src="`https://image.tmdb.org/t/p/w200/${item.poster_path}`" alt="">
+            </figure>
+
             <div v-if="item.title" class="title">
                 <div class="type">
                     Movie
@@ -84,8 +91,8 @@ export default {
 
     .card{
         border: 1px solid white;
-        min-height: 100px;
-        width: calc(98% / 5);
+        // min-height: 100px;
+        width: 200px;
 
 
         .original-title{
