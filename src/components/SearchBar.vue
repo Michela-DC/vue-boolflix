@@ -23,6 +23,7 @@ export default {
         getMovies: function () {
             // la funzione che fa la chiamata la faccio partire solo se è stato digitato qualcosa nell'input
             if(this.searchInput !== '') {
+                // chiamata per i film ------------------------
                 axios.get(`${this.baseURL}/search/movie`, {
                     params: {
                         api_key: 'b4627578657d378551ee9e5a127d725a',
@@ -43,6 +44,29 @@ export default {
                     console.warn(err.response);
                     // se la pagina va in errore resetto l'album e potrei anche mostrare un messaggio di errore
                     state.movies = [];
+                })
+
+                // chiamata per le serie TV -----------------
+                axios.get(`${this.baseURL}/search/tv`, {
+                    params: {
+                        api_key: 'b4627578657d378551ee9e5a127d725a',
+                        query: this.searchInput,
+                    }
+                })
+                .then (res => {
+                    console.log(res, res.data);
+                    // invece di salvarlo dentro a this.movies lo salvo dentro a state.movies ovvero dentro l'array movies che è in store.js e in questo modo rendo l'array accessibile anche ad altri componenti
+                    state.tvSeries = res.data.results;
+    
+                    console.log('dentro state.movies =', state.tvSeries);
+    
+                })
+    
+                //recupero errori o risposte negative del server
+                .catch( err => {
+                    console.warn(err.response);
+                    // se la pagina va in errore resetto l'album e potrei anche mostrare un messaggio di errore
+                    state.tvSeries = [];
                 })
             } 
         },
