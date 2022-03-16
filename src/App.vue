@@ -24,7 +24,7 @@ export default {
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #141414;

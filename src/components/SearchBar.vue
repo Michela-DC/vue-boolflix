@@ -25,7 +25,7 @@ export default {
             if(this.searchInput !== '') {
                 axios.get(`${this.baseURL}/search/movie`, {
                     params: {
-                        api_key: '9857cfb37fc41b760e69c70f6d75b517',
+                        api_key: 'b4627578657d378551ee9e5a127d725a',
                         query: this.searchInput,
                     }
                 })
@@ -46,7 +46,6 @@ export default {
                 })
             } 
         },
-
     },
 
     computed: {
