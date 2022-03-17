@@ -1,50 +1,50 @@
 <template>
-    <div class="cards-container">
-        <div class="card" v-for="item in mergedFilters" :key="item.id">
-            <figure v-if="item.poster_path == null">
-                image not available
-            </figure>
-            <figure v-else class="poster-wrapper">
-                <img :src="`https://image.tmdb.org/t/p/w200/${item.poster_path}`" alt="">
-            </figure>
+    <div class="card">
+        <figure v-if="item.poster_path == null" class="no-img">
+            poster not available
+        </figure>
+        <figure v-else class="poster-wrapper">
+            <img :src="`https://image.tmdb.org/t/p/w200/${item.poster_path}`" alt="">
+        </figure>
 
-            <div v-if="item.title" class="title">
-                <div class="type">
-                    Movie
-                </div>
-                {{item.title}}
-            </div>
-            <div v-if="item.name" class="title">
-                <div class="type">
-                    TV Series
-                </div>
-                {{item.name}}
-            </div>
+        <!-- se item.title ha un valore allora stampo il titolo dei film dato che hanno la proprietá item.title, altrimenti stampo titolo serie -->
+        <!-- v-if="item.title" é la stessa cosa di dire v-if="item.title !== undefined" -->
+        <p v-if="item.title" class="title">
+            {{item.title}}
+        </p>
+        <p v-else class="title">
+            {{item.name}}
+        </p>
 
-            <div v-if="item.original_title" class="original-title">
-                {{item.original_title}}
-            </div>
-            <div v-if="item.original_name" class="original-title">
-                {{item.original_name}}
-            </div>
+        <p v-if="item.original_title" class="original-title">
+            {{item.original_title}}
+        </p>
+        <p v-else class="original-title">
+            {{item.original_name}}
+        </p>
 
-            <div class="language">
-                Language {{getFlag(item.original_language)}}
-            </div>
+        <p class="language">
+            Language {{getFlag(item.original_language)}}
+        </p>
 
-            <div class="vote">
-                {{item.vote_average}}
-            </div>
+        <div class="vote-wrapper">
+            {{vote}}
         </div>
+
     </div>
 </template>
 
 <script>
-import state from '../store.js'
 import getUnicodeFlagIcon from 'country-flag-icons/unicode' //questa libreria non può essere usata direttamente dentro il template
 
 export default {
     name: 'MoviesSeries',
+    props: {
+        item: {
+          type: Object,
+          require: true,
+        },
+    },
     methods: {
         // creo funzione per usare la libreria delle bandiere
         getFlag: function (unicode) {
@@ -53,58 +53,60 @@ export default {
                 unicode = 'gb';
             }
             return getUnicodeFlagIcon (unicode);
-
-        }
+        },
     },
 
     computed: {
-        filteredMovies: function () { 
-            return state.movies.filter(movie => {
-                return movie.title.toLowerCase().includes(state.searchInput.toLowerCase());
-            })
-        },
-
-        filteredTvSeries: function () { 
-            return state.tvSeries.filter(series=> {
-                return series.name.toLowerCase().includes(state.searchInput.toLowerCase());
-            })
-        },
-
-        mergedFilters: function () {
-            return this.filteredMovies.concat(this.filteredTvSeries);
+        vote: function () {
+            return Math.ceil(this.item.vote_average / 2);
         }
     }
-
 }
 
 </script>
 
 <style lang="scss" scoped>
-.cards-container{
-    height: 100%;
-    color: white;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 2%;
 
-    .card{
-        border: 1px solid white;
-        // min-height: 100px;
-        width: 200px;
+.card{
+    border: 1px solid white;
+    // min-height: 100px;
+    width: 200px;
 
-
-        .original-title{
-            font-style: italic;
-            color: lightblue;
-        }
+    .original-title{
+        font-style: italic;
+        color: lightblue;
     }
 }
 
-.type{
-    font-size: 15px;
-    color: lightgrey;
+.vote-wrapper{
+    display: flex;
+    gap: 5px;
+
+    .full-star{
+        color: gold;
+    }
 }
 
+// Per recuperare item.title e item.name potrei anche fare
+// - nei methods
+// title: function (item) {
+//         if(item.title !== undefined){
+//             return item.title
+//         }
+
+//         return item.name;
+//     }
+// }
+// oppure con operatore logico ||
+// title: function (item) {
+//     return this.item.name || this.item.name
+//    }
+//},
+
+// - poi nel template
+//     <div class="title">
+//         <div class="type">
+//         </div>
+//         {{title(item)}}
+//     </div>
 </style>

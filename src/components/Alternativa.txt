@@ -1,0 +1,178 @@
+ALTERNATIVA IN CUI NON USO I PROPS
+
+<template>
+    <main>
+        <div class="container">
+            <MoviesSeries/>
+        </div>
+    </main>
+</template>
+
+<script>
+import MoviesSeries from './MoviesSeries.vue'
+export default {
+    name: 'MainContent',
+    components: {
+        MoviesSeries,
+    },
+}
+</script>
+
+<style lang="scss" scoped>
+main{
+    flex-grow: 1;
+}
+.container{
+    margin: 0 auto;
+    height: 100%;
+}
+</style>
+
+E IN MOVIES SERIES -----------------------------
+
+<template>
+    <div class="cards-container">          
+        <div class="card" v-for="item in mergedFilters" :key="item.id">
+            <figure v-if="item.poster_path == null" class="no-img">
+                image not available
+            </figure>
+            <figure v-else class="poster-wrapper">
+                <img :src="`https://image.tmdb.org/t/p/w200/${item.poster_path}`" alt="">
+            </figure>
+
+            <!-- se item.title ha un valore allora stampo il titolo dei film dato che hanno la proprietá item.title, altrimenti stampo titolo serie -->
+            <!-- v-if="item.title" é la stessa cosa di dire v-if="item.title !== undefined" -->
+            <div v-if="item.title" class="title">
+                <div class="type">
+                    Movie
+                </div>
+                {{item.title}}
+            </div>
+            <div v-else class="title">
+                <div class="type">
+                    TV Series
+                </div>
+                {{item.name}}
+            </div>
+
+            <div v-if="item.original_title" class="original-title">
+                {{item.original_title}}
+            </div>
+            <div v-else class="original-title">
+                {{item.original_name}}
+            </div>
+
+            <div class="language">
+                Language {{getFlag(item.original_language)}}
+            </div>
+
+            <div class="vote">
+                {{item.vote_average}}
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import state from '../store.js'
+import getUnicodeFlagIcon from 'country-flag-icons/unicode' //questa libreria non può essere usata direttamente dentro il template
+
+export default {
+    name: 'MoviesSeries',
+    data () {
+        return {
+            votes: {
+                vote: state.moviesVotes,
+                id: state.idMovies,
+            },
+        }
+    },
+    methods: {
+        // creo funzione per usare la libreria delle bandiere
+        getFlag: function (unicode) {
+            // dato che l'unicode ufficiale della Gran Bretagna non è en ma gb, allora specifico che quando lo trova deve diventare gb
+            if(unicode == 'en') {
+                unicode = 'gb';
+            }
+            return getUnicodeFlagIcon (unicode);
+        }
+    },
+
+    computed: {
+        filteredMovies: function () { 
+            return state.movies.filter(movie => {
+                return movie.title.toLowerCase().includes(state.searchInput.toLowerCase());
+            })
+        },
+
+        filteredTvSeries: function () { 
+            return state.tvSeries.filter(series=> {
+                return series.name.toLowerCase().includes(state.searchInput.toLowerCase());
+            })
+        },
+
+        mergedFilters: function () {
+            return this.filteredMovies.concat(this.filteredTvSeries);
+        },
+    }
+}
+
+</script>
+
+<style lang="scss" scoped>
+.cards-container{
+    height: 100%;
+    color: white;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2%;
+
+    .card{
+        border: 1px solid white;
+        // min-height: 100px;
+        width: 200px;
+
+        .original-title{
+            font-style: italic;
+            color: lightblue;
+        }
+    }
+}
+
+.type{
+    font-size: 15px;
+    color: lightgrey;
+}
+
+.vote{
+    display: flex;
+    gap: 5px;
+
+    .full-star{
+        color: yellow;
+    }
+}
+
+// Per recuperare item.title e item.name potrei anche fare
+// - nei methods
+// title: function (item) {
+//             if(item.title !== undefined){
+//                 return item.title
+//             }
+
+//             return item.name;
+//         }
+//     },
+
+// - poi nel template
+//     <div class="title">
+//         <div class="type">
+//         </div>
+//         {{title(item)}}
+//     </div>
+</style>
+
+SE IN QUESTA ALTERNATIVA VOLESSI METTERE GLI H2 PER DISTIGUERE MOVIES E TV SERIES DOVREI USARE SINGOLARMENTE 
+I DUE ARRAY FILTRATI E NEL TEMPLATE DOVREI CREARE DUE CARDS ------------------

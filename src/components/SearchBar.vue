@@ -34,8 +34,6 @@ export default {
                     console.log(res, res.data);
                     // invece di salvarlo dentro a this.movies lo salvo dentro a state.movies ovvero dentro l'array movies che è in store.js e in questo modo rendo l'array accessibile anche ad altri componenti
                     state.movies = res.data.results;
-    
-                    console.log('dentro state.movies =', state.movies);
                 })
                 //recupero errori o risposte negative del server
                 .catch( err => {
@@ -52,11 +50,8 @@ export default {
                     }
                 })
                 .then (res => {
-                    console.log(res, res.data);
                     // invece di salvarlo dentro a this.movies lo salvo dentro a state.movies ovvero dentro l'array movies che è in store.js e in questo modo rendo l'array accessibile anche ad altri componenti
                     state.tvSeries = res.data.results;
-    
-                    console.log('dentro state.movies =', state.tvSeries);
                 })
                 //recupero errori o risposte negative del server
                 .catch( err => {
@@ -64,12 +59,11 @@ export default {
                     // se la pagina va in errore resetto l'album e potrei anche mostrare un messaggio di errore
                     state.tvSeries = [];
                 })
-            } 
+            }
         },
     },
 
     computed: {
-
         // creo la funzione che copia dentro a state.input quello che é stato inserito nell'input cosí viene salvato dentro store.js e posso usarlo anche in altri componenti
         copyIntoStore: function () {
             state.searchInput = this.searchInput;
