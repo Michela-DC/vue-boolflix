@@ -1,52 +1,69 @@
 <template>
     <div class="card">
-        <figure v-if="item.poster_path == null" class="no-img">
-            poster not available
+        <figure v-if="item.poster_path == null" class="poster-wrapper no-img">
+            <img src="../assets/img/logo_boolflix.jpeg" alt="">
         </figure>
         <figure v-else class="poster-wrapper">
-            <img :src="`https://image.tmdb.org/t/p/w200/${item.poster_path}`" alt="">
+            <img :src="`https://image.tmdb.org/t/p/w185/${item.poster_path}`" alt="">
         </figure>
 
-        <!-- se item.title ha un valore allora stampo il titolo dei film dato che hanno la proprietá item.title, altrimenti stampo titolo serie -->
-        <!-- v-if="item.title" é la stessa cosa di dire v-if="item.title !== undefined" -->
-        <p v-if="item.title" class="title">
-            {{item.title}}
-        </p>
-        <p v-else class="title">
-            {{item.name}}
-        </p>
+        <div class="movie-info">
+            <!-- se item.title ha un valore allora stampo il titolo dei film dato che hanno la proprietá item.title, altrimenti stampo titolo serie -->
+            <!-- v-if="item.title" é la stessa cosa di dire v-if="item.title !== undefined" -->
+            <p v-if="item.title" class="title">
+                <span>Titolo: </span>
+                {{item.title}}
+            </p>
+            <p v-else class="title">
+                <span>Titolo: </span>
+                {{item.name}}
+            </p>
 
-        <p v-if="item.original_title" class="original-title">
-            {{item.original_title}}
-        </p>
-        <p v-else class="original-title">
-            {{item.original_name}}
-        </p>
+            <p v-if="item.original_title" class="original-title">
+                <span>Titolo originale: </span>
+                {{item.original_title}}
+            </p>
+            <p v-else class="original-title">
+                <span>Titolo originale: </span>
+                {{item.original_name}}
+            </p>
 
-        <p class="language">
-            Language {{getFlag(item.original_language)}}
-        </p>
+            <div class="language">
+                <div>Lingua: </div>
 
-        <div class="vote-wrapper">
-            <!-- {{vote}} -->
-            <div class="vote" v-for="n in 5" :key="n">
-                <!-- posso usare il binding sulla classe -->
-                <i class="fa-star" :class="n <= vote ? 'fa-solid' : 'fa-regular' "></i>
-                <!-- oppure con v-if -->
-                <!-- <div v-if="n <= vote" class="full-stars">
-                    <i class="fa-solid fa-star"></i>
+                <div v-if="controlFlag(item.original_language)" class="flag" >
+                    {{getFlag(item.original_language)}}
                 </div>
-                <div v-else class="empty-stars">
-                    <i class="fa-regular fa-star"></i>
-                </div> -->
+                <div v-else class="no-flag" >
+                    {{getFlag(item.original_language)}}
+                </div>
+            </div>
+
+
+            <div class="vote-wrapper">
+                <!-- {{vote}} -->
+                <span>Voto:</span>
+                <div class="vote" v-for="n in 5" :key="n">
+                    <!-- posso usare il binding sulla classe -->
+                    <i class="fa-star" :class="n <= vote ? 'fa-solid' : 'fa-regular' "></i>
+                    <!-- oppure con v-if -->
+                    <!-- <div v-if="n <= vote" class="full-stars">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div v-else class="empty-stars">
+                        <i class="fa-regular fa-star"></i>
+                    </div> -->
+                </div>
             </div>
         </div>
+
 
     </div>
 </template>
 
 <script>
 import getUnicodeFlagIcon from 'country-flag-icons/unicode' //questa libreria non può essere usata direttamente dentro il template
+import { hasFlag } from 'country-flag-icons'
 
 export default {
     name: 'MoviesSeries',
@@ -65,6 +82,15 @@ export default {
             }
             return getUnicodeFlagIcon (unicode);
         },
+
+        controlFlag: function (unicode) {
+            // gli unicode sono maiuscoli quindi, dato che l'api li fornisce in minuscolo, per fare il controllo li devo trasformare in maiuscolo
+            if(unicode == 'en') {
+                unicode = 'GB';
+            }
+
+            return hasFlag(unicode.toUpperCase());
+        }
     },
 
     computed: {
@@ -78,46 +104,67 @@ export default {
 
 <style lang="scss" scoped>
 
+img{
+    width: 185px;
+    display: block;
+}
+
 .card{
-    border: 1px solid white;
-    // min-height: 100px;
-    width: 200px;
-
-    .original-title{
-        font-style: italic;
-        color: lightblue;
-    }
-}
-
-.vote-wrapper{
+    margin-bottom: 10px;
+    border: 2px solid black;
+    background-color: white;
     display: flex;
-    gap: 5px;
-
-    .full-star{
-        color: gold;
-    }
+    align-items: center;
+    position: relative;
 }
 
-// Per recuperare item.title e item.name potrei anche fare
-// - nei methods
-// title: function (item) {
-//         if(item.title !== undefined){
-//             return item.title
-//         }
+.no-img{
+    height: 278px;
+    width: 200px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-//         return item.name;
-//     }
-// }
-// oppure con operatore logico ||
-// title: function (item) {
-//     return this.item.name || this.item.name
-//    }
-//},
+.movie-info{
+    width: 200px;
+    display: none;
 
-// - poi nel template
-//     <div class="title">
-//         <div class="type">
-//         </div>
-//         {{title(item)}}
-//     </div>
+    p, .language{
+    margin-bottom: 5px;
+    }
+
+    span{
+        font-weight: bold;
+    }
+
+    .vote-wrapper{
+        display: flex;
+        gap: 5px;
+
+        .fa-star{
+            color: gold;
+        }
+    }
+
+    .language{
+        display: flex;
+        gap: 5px;
+
+        .no-flag{
+            background-color: white;
+        }
+    }
+
+}
+
+.card:hover .movie-info{
+    display: block;
+    position: absolute;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    height: 100%;
+    padding: 60px 12px 0 12px;
+}
 </style>

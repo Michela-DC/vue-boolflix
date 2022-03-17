@@ -2,10 +2,14 @@
     <main>
         <div class="container">
             <h2>Movies</h2>
-            <MoviesSeries class="card" v-for="item in filteredMovies" :key="item.id" :item="item"/>
-            
+            <div class="cards-container">
+                <MoviesSeries class="card" v-for="item in filteredMovies" :key="item.id" :item="item"/>
+            </div>
+
             <h2>TV Series</h2>
-            <MoviesSeries class="card" v-for="item in filteredTvSeries" :key="item.id" :item="item"/>
+            <div class="cards-container">
+                <MoviesSeries class="card" v-for="item in filteredTvSeries" :key="item.id" :item="item"/>
+            </div>
         </div>
     </main>
 </template>
@@ -44,11 +48,30 @@ main{
 }
 
 .container{
-    margin: 0 auto;
+    // width: 90%;
+    padding: 0 2%;
     height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+
+    .cards-container{
+        display: flex;
+        overflow-x: scroll;
+        gap: 1%;
+        margin-bottom: 20px;
+        position: relative;
+
+        &::-webkit-scrollbar{
+            height: 10px;
+        }
+
+        &::-webkit-scrollbar-track{
+            background-color: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb{
+            background-color: rgba(169, 169, 169, 0.3);
+            border-radius: 10px;
+        }
+
+    }
 }
 </style>

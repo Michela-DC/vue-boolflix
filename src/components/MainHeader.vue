@@ -21,6 +21,10 @@ export default {
 
 <style lang="scss" scoped>
 
+header{
+    margin-bottom: 30px;
+}
+
 .header-container{
     background-color: black;
     height: 60px;
