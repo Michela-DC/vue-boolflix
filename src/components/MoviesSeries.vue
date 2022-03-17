@@ -28,7 +28,18 @@
         </p>
 
         <div class="vote-wrapper">
-            {{vote}}
+            <!-- {{vote}} -->
+            <div class="vote" v-for="n in 5" :key="n">
+                <!-- posso usare il binding sulla classe -->
+                <i class="fa-star" :class="n <= vote ? 'fa-solid' : 'fa-regular' "></i>
+                <!-- oppure con v-if -->
+                <!-- <div v-if="n <= vote" class="full-stars">
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <div v-else class="empty-stars">
+                    <i class="fa-regular fa-star"></i>
+                </div> -->
+            </div>
         </div>
 
     </div>
