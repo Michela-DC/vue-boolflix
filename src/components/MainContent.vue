@@ -4,11 +4,17 @@
             <h2>Movies</h2>
             <div class="cards-container">
                 <MoviesSeries class="card" v-for="item in filteredMovies" :key="item.id" :item="item"/>
+                <div v-if="filteredMovies.length == 0">
+                    No results found
+                </div>
             </div>
 
             <h2>TV Series</h2>
             <div class="cards-container">
                 <MoviesSeries class="card" v-for="item in filteredTvSeries" :key="item.id" :item="item"/>
+                <div v-if="filteredTvSeries.length == 0">
+                    No results found
+                </div>
             </div>
         </div>
     </main>
@@ -71,7 +77,19 @@ main{
             background-color: rgba(169, 169, 169, 0.3);
             border-radius: 10px;
         }
-
     }
+
 }
+
+@media screen and (max-width: 575px){
+    .container {
+        margin-top: 165px;
+    }
+
+    .cards-container{
+        align-items: center;
+    }
+
+}
+
 </style>

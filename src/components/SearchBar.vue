@@ -80,19 +80,44 @@ export default {
 
     input{
         width: 15rem;
-        height: 27px;
+        height: 1.8rem;
         padding: 0 10px;
         border-radius: 5px;
     }
 
     .btn-search{
         margin-left: 5px;
-        height: 27px;
+        height: 1.8rem;
         background-color: transparent;
         padding: 0 10px;
         color: white;
         border: 2px solid white;
         border-radius: 5px;
+    }
+}
+
+@media screen and (min-width: 576px) and (max-width: 768px){
+       .searchbar-wrapper > input {
+           width: 12rem;
+       }
+}
+
+@media screen and (max-width: 575px){
+    .searchbar-wrapper{
+        display: flex;
+        flex-direction: column;
+        width: 18rem;
+        gap: 15px;
+
+        input {
+            width: 100%;
+        }
+
+        .btn-search{
+            width: 7rem;
+            margin-left: 0;
+            background-color: black;
+        }
     }
 }
 

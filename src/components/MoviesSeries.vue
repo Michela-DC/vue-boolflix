@@ -1,10 +1,11 @@
 <template>
     <div class="card">
+        <!-- <div class="poster" :style="`{ background-image: url('+require(https://image.tmdb.org/t/p/w185/${item.poster_path})+'); }`"></div> -->
         <figure v-if="item.poster_path == null" class="poster-wrapper no-img">
-            <img src="../assets/img/logo_boolflix.jpeg" alt="">
+            <img class="poster" src="../assets/img/logo_boolflix.jpeg" alt="">
         </figure>
         <figure v-else class="poster-wrapper">
-            <img :src="`https://image.tmdb.org/t/p/w185/${item.poster_path}`" alt="">
+            <img class="poster" :src="`https://image.tmdb.org/t/p/w185/${item.poster_path}`" alt="">
         </figure>
 
         <div class="movie-info">
@@ -104,18 +105,19 @@ export default {
 
 <style lang="scss" scoped>
 
-img{
-    width: 185px;
-    display: block;
-}
-
 .card{
-    margin-bottom: 10px;
     border: 2px solid black;
-    background-color: white;
+    background-color: black;
     display: flex;
     align-items: center;
     position: relative;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+.poster{
+    width: 185px;
+    display: block;
 }
 
 .no-img{
@@ -129,13 +131,19 @@ img{
 
 .movie-info{
     width: 200px;
-    display: none;
+    height: 100%;
+    padding: 15px;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.8);
 
     p, .language{
-    margin-bottom: 5px;
+        margin-bottom: 5px;
     }
 
-    span{
+    span, .language{
+        color: red;
         font-weight: bold;
     }
 
@@ -160,11 +168,28 @@ img{
 }
 
 .card:hover .movie-info{
-    display: block;
-    position: absolute;
-    top: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-    height: 100%;
-    padding: 60px 12px 0 12px;
+    opacity: 1;
 }
+
+@media screen and (max-width: 575px){
+    .card{
+        margin-bottom: 5px;
+    }
+
+    .poster-wrapper{
+        height: 228px;
+        display: flex;
+        align-items: center;
+    }
+
+    .poster{
+        width: 150px;
+    }
+
+    .no-img{
+        width: 150px;
+        height: 230px;
+    }
+}
+
 </style>
