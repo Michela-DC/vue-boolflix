@@ -1,14 +1,14 @@
 <template>
     <div class="searchbar-wrapper" >
-        <input type="text" placeholder="Cerca un film o una serie TV" v-model="searchInput" v-on:keyup.enter="getMovies">
+        <input type="text" placeholder="Cerca un film o una serie TV" v-model="searchInput" v-on:keyup.enter="setData">
         <!-- al click sul mouse faccio partire la funzione che se vede che c'è sritto qualcosa nell'input fa la chiamata al server -->
-        <button class="btn-search" @click="getMovies">Search</button>
+        <button class="btn-search" @click="setData">Search</button>
     </div>
 </template>
 
 <script>
 import state from '../store.js';
-import axios from 'axios'
+import {getData} from '../store.js';
 
 export default {
     name: 'SearchBar',
@@ -20,56 +20,13 @@ export default {
     },
 
     methods: {
-        getMovies: function () {
-            // la funzione che fa la chiamata la faccio partire solo se è stato digitato qualcosa nell'input
-            if(this.searchInput !== '') {
-                // chiamata per i FILM ---------------------------------
-                axios.get(`${this.baseURL}/search/movie`, {
-                    params: {
-                        api_key: 'b4627578657d378551ee9e5a127d725a',
-                        query: this.searchInput,
-                    }
-                })
-                .then (res => {
-                    console.log(res, res.data);
-                    // invece di salvarlo dentro a this.movies lo salvo dentro a state.movies ovvero dentro l'array movies che è in store.js e in questo modo rendo l'array accessibile anche ad altri componenti
-                    state.movies = res.data.results;
-                })
-                //recupero errori o risposte negative del server
-                .catch( err => {
-                    console.warn(err.response);
-                    // se la pagina va in errore resetto l'album e potrei anche mostrare un messaggio di errore
-                    state.movies = [];
-                })
-
-                // chiamata per le SERIE TV ----------------------------
-                axios.get(`${this.baseURL}/search/tv`, {
-                    params: {
-                        api_key: 'b4627578657d378551ee9e5a127d725a',
-                        query: this.searchInput,
-                    }
-                })
-                .then (res => {
-                    // invece di salvarlo dentro a this.movies lo salvo dentro a state.movies ovvero dentro l'array movies che è in store.js e in questo modo rendo l'array accessibile anche ad altri componenti
-                    state.tvSeries = res.data.results;
-                })
-                //recupero errori o risposte negative del server
-                .catch( err => {
-                    console.warn(err.response);
-                    // se la pagina va in errore resetto l'album e potrei anche mostrare un messaggio di errore
-                    state.tvSeries = [];
-                })
-            }
+        // creo la funzione che copia dentro a state.input quello che é stato inserito nell'input cosí viene salvato dentro store.js e posso usarlo anche in altri componenti
+        setData: function () {
+            state.searchInput = this.searchInput;
+            
+            getData(); // dopo che é stato modificato il valore di search invoco la funzione che fa la chiamata all'api e che ho messo nello store
         },
     },
-
-    computed: {
-        // creo la funzione che copia dentro a state.input quello che é stato inserito nell'input cosí viene salvato dentro store.js e posso usarlo anche in altri componenti
-        copyIntoStore: function () {
-            state.searchInput = this.searchInput;
-            return state.searchInput;
-        },
-    }
 
 }
 </script>
@@ -92,7 +49,13 @@ export default {
         padding: 0 10px;
         color: white;
         border: 2px solid white;
+        background-color: black;
         border-radius: 5px;
+
+        &:hover{
+            color: red;
+            border: 2px solid red;
+        }
     }
 }
 

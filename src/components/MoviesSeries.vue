@@ -5,48 +5,47 @@
             <img class="poster" src="../assets/img/logo_boolflix.jpeg" alt="">
         </figure>
         <figure v-else class="poster-wrapper">
-            <img class="poster" :src="`https://image.tmdb.org/t/p/w185/${item.poster_path}`" alt="">
+            <img class="poster" :src="`https://image.tmdb.org/t/p/w300/${item.poster_path}`" alt="">
         </figure>
 
         <div class="movie-info">
-            <!-- se item.title ha un valore allora stampo il titolo dei film dato che hanno la proprietá item.title, altrimenti stampo titolo serie -->
-            <!-- v-if="item.title" é la stessa cosa di dire v-if="item.title !== undefined" -->
-            <p v-if="item.title" class="title">
-                <span>Titolo: </span>
-                {{item.title}}
-            </p>
-            <p v-else class="title">
-                <span>Titolo: </span>
-                {{item.name}}
-            </p>
+            <dl>
+                <!-- se item.title ha un valore allora stampo il titolo dei film dato che hanno la proprietá item.title, altrimenti stampo titolo serie -->
+                <!-- v-if="item.title" é la stessa cosa di dire v-if="item.title !== undefined" -->
+                <dt>Titolo: </dt>
+                <dd v-if="item.title" class="title">
+                    {{item.title}}
+                </dd>
+                <dd v-else class="title">
+                    {{item.name}}
+                </dd>
+            </dl>
 
-            <p v-if="item.original_title" class="original-title">
-                <span>Titolo originale: </span>
-                {{item.original_title}}
-            </p>
-            <p v-else class="original-title">
-                <span>Titolo originale: </span>
-                {{item.original_name}}
-            </p>
+            <dl>
+                <dt>Titolo originale: </dt>
+                <dd v-if="item.original_title" class="original-title">
+                    {{item.original_title}}
+                </dd>
+                <dd v-else class="original-title">
+                    {{item.original_name}}
+                </dd>
+            </dl>
 
-            <div class="language">
-                <div>Lingua: </div>
-
-                <div v-if="controlFlag(item.original_language)" class="flag" >
+            <dl class="language">
+                <dt>Lingua: </dt>
+                <dd v-if="controlFlag(item.original_language)" class="flag" >
                     {{getFlag(item.original_language)}}
-                </div>
-                <div v-else class="no-flag" >
+                </dd>
+                <dd v-else class="no-flag" >
                     {{getFlag(item.original_language)}}
-                </div>
-            </div>
+                </dd>
+            </dl>
 
-
-            <div class="vote-wrapper">
-                <!-- {{vote}} -->
-                <span>Voto:</span>
-                <div class="vote" v-for="n in 5" :key="n">
+            <dl>
+                <dt>Voto:</dt>
+                <dd class="vote">
                     <!-- posso usare il binding sulla classe -->
-                    <i class="fa-star" :class="n <= vote ? 'fa-solid' : 'fa-regular' "></i>
+                    <i v-for="n in 5" :key="n" class="fa-star" :class="n <= vote ? 'fa-solid' : 'fa-regular' "></i>
                     <!-- oppure con v-if -->
                     <!-- <div v-if="n <= vote" class="full-stars">
                         <i class="fa-solid fa-star"></i>
@@ -54,11 +53,14 @@
                     <div v-else class="empty-stars">
                         <i class="fa-regular fa-star"></i>
                     </div> -->
-                </div>
-            </div>
+                </dd>
+            </dl>
+            
+            <dl>
+                <dt>Overview:</dt>
+                <dd>{{item.overview}}</dd>
+            </dl>
         </div>
-
-
     </div>
 </template>
 
@@ -111,18 +113,18 @@ export default {
     display: flex;
     align-items: center;
     position: relative;
-    font-size: 0.9rem;
-    margin-bottom: 12px;
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
 }
 
 .poster{
-    width: 185px;
+    width: 250px;
     display: block;
 }
 
 .no-img{
-    height: 278px;
-    width: 200px;
+    width: 250px;
+    height: 100%;
     background-color: white;
     display: flex;
     align-items: center;
@@ -130,24 +132,37 @@ export default {
 }
 
 .movie-info{
-    width: 200px;
+    width: 250px;
     height: 100%;
-    padding: 15px;
+    padding: 1.50rem 1rem;
     opacity: 0;
     position: absolute;
     top: 0;
     background-color: rgba(0, 0, 0, 0.8);
+    overflow-y: scroll;
 
-    p, .language{
+    &::-webkit-scrollbar{
+        width: 7px;
+    }
+
+    &::-webkit-scrollbar-thumb{
+        background-color: red;
+        border-radius: 10px;
+    }
+
+    dl{
         margin-bottom: 5px;
+        dt{
+            color: red;
+            font-weight: bold;
+        }
+
+        dt, dd{
+            display: inline;
+        }
     }
 
-    span, .language{
-        color: red;
-        font-weight: bold;
-    }
-
-    .vote-wrapper{
+    .vote{
         display: flex;
         gap: 5px;
 
@@ -156,6 +171,7 @@ export default {
         }
     }
 
+
     .language{
         display: flex;
         gap: 5px;
@@ -163,6 +179,7 @@ export default {
         .no-flag{
             background-color: white;
         }
+        
     }
 
 }
@@ -171,24 +188,37 @@ export default {
     opacity: 1;
 }
 
+@media screen and (min-width: 576px) and (max-width: 768px){
+    .poster{
+        width: 185px;
+        display: block;
+    }
+
+    .no-img{
+        width: 185px;
+        // height: 225px;
+    }
+}
+
 @media screen and (max-width: 575px){
     .card{
         margin-bottom: 5px;
     }
 
     .poster-wrapper{
-        height: 228px;
         display: flex;
         align-items: center;
     }
 
     .poster{
+        height: 225px;
         width: 150px;
+        display: block;
     }
 
     .no-img{
         width: 150px;
-        height: 230px;
+        height: 225px;
     }
 }
 

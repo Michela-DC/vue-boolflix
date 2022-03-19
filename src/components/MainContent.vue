@@ -51,34 +51,32 @@ export default {
 main{
     flex-grow: 1;
     color: white;
+    margin-top: 90px;
 }
 
 .container{
-    // width: 90%;
     padding: 0 2%;
     height: 100%;
 
+    h2{
+        margin-bottom: 1rem;
+    }
+
     .cards-container{
         display: flex;
-        overflow-x: scroll;
         gap: 1%;
-        margin-bottom: 20px;
-        position: relative;
+        margin-bottom: 2.5rem;
+        overflow-x: scroll;
 
         &::-webkit-scrollbar{
-            height: 10px;
-        }
-
-        &::-webkit-scrollbar-track{
-            background-color: transparent;
+            height: 8px;
         }
 
         &::-webkit-scrollbar-thumb{
-            background-color: rgba(169, 169, 169, 0.3);
+            background-color: red;
             border-radius: 10px;
         }
     }
-
 }
 
 @media screen and (max-width: 575px){

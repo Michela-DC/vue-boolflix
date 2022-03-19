@@ -22,12 +22,17 @@ export default {
 <style lang="scss" scoped>
 
 header{
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 10;
+    background: #141414;
 }
 
 .header-container{
-    background-color: black;
-    height: 60px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -41,6 +46,17 @@ header{
 }
 
 @media screen and (max-width: 575px){
+
+    header{
+        padding: 20px 10px 35px 10px;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        z-index: 100;
+        background: linear-gradient(to top, rgba(#141414,0), #141414);
+    }
+
     .header-container{
         height: fit-content;
         flex-direction: column;
@@ -48,13 +64,6 @@ header{
         align-items: flex-start;
         justify-content: center;
         gap: 15px;
-        padding: 20px 10px 35px 10px;
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 0;
-        z-index: 100;
-        background: linear-gradient(to top, rgba(0,0,0,0), #000);
     }
 }
 

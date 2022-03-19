@@ -30,5 +30,20 @@ export default {
   flex-direction: column;
   background-color: #141414;
 }
+
+body{
+  &::-webkit-scrollbar{
+        width: 7px;
+  }
+
+  &::-webkit-scrollbar-track{
+    background-color: #141414;
+  }
+
+  &::-webkit-scrollbar-thumb{
+      background-color: rgba(169, 169, 169, 0.3);
+      border-radius: 10px;
+  }
+}
 </style>
 
