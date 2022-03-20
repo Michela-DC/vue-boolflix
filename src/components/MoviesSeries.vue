@@ -99,7 +99,7 @@ export default {
     computed: {
         vote: function () {
             return Math.ceil(this.item.vote_average / 2);
-        }
+        },
     }
 }
 

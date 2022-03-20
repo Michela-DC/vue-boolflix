@@ -48,7 +48,6 @@ header{
 @media screen and (max-width: 575px){
 
     header{
-        padding: 20px 10px 35px 10px;
         position: fixed;
         left: 0;
         right: 0;
@@ -64,6 +63,7 @@ header{
         align-items: flex-start;
         justify-content: center;
         gap: 15px;
+        padding: 20px 15px;
     }
 }
 

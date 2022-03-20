@@ -55,7 +55,7 @@ main{
 }
 
 .container{
-    padding: 0 2%;
+    padding: 0 30px;
     height: 100%;
 
     h2{
@@ -81,7 +81,8 @@ main{
 
 @media screen and (max-width: 575px){
     .container {
-        margin-top: 165px;
+        margin-top: 100px;
+        padding: 0 15px;
     }
 
     .cards-container{
