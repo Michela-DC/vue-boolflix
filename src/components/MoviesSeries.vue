@@ -189,6 +189,10 @@ export default {
 }
 
 @media screen and (min-width: 576px) and (max-width: 768px){
+    .card{
+        font-size: 0.875rem;
+    }
+
     .poster{
         width: 185px;
         display: block;
@@ -198,11 +202,16 @@ export default {
         width: 185px;
         // height: 225px;
     }
+
+    .movie-info{
+        width: 185px;
+    }
 }
 
 @media screen and (max-width: 575px){
     .card{
         margin-bottom: 5px;
+        font-size: 0.75rem;
     }
 
     .poster-wrapper{
@@ -219,6 +228,10 @@ export default {
     .no-img{
         width: 150px;
         height: 225px;
+    }
+
+    .movie-info{
+        width: 150px;
     }
 }
 
